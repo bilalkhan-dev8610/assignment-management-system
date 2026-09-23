@@ -111,6 +111,20 @@ async function listStudentCourses(studentId) {
   return rows;
 }
 
+async function listAvailableCoursesForStudent(studentId) {
+  const { rows } = await query(
+    `${COURSE_SELECT}
+     WHERE NOT EXISTS (
+       SELECT 1
+       FROM course_enrollments e
+       WHERE e.course_id = c.id AND e.student_id = $1
+     )
+     ORDER BY c.created_at DESC, c.id DESC`,
+    [studentId]
+  );
+  return rows;
+}
+
 async function enrollStudent(courseId, studentId) {
   const course = await findCourseById(courseId);
   if (!course) throw new AppError(404, 'Course not found');
@@ -160,6 +174,7 @@ module.exports = {
   updateCourse,
   deleteCourse,
   listStudentCourses,
+  listAvailableCoursesForStudent,
   enrollStudent,
   getCourseForUser,
 };

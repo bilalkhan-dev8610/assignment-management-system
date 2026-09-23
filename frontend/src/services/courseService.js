@@ -2,6 +2,8 @@ import { api } from './api.js';
 
 export const getProfessorCourses = async () => (await api.get('/courses/professor')).data.courses;
 export const getStudentCourses = async () => (await api.get('/courses/student')).data.courses;
+export const getAvailableCourses = async () => (await api.get('/courses/available')).data.courses;
+export const enrollCourse = async (courseId) => (await api.post(`/courses/${courseId}/enroll`)).data.course;
 export const getCourse = async (id) => (await api.get(`/courses/${id}`)).data.course;
 export const createCourse = async (details) => (await api.post('/courses', details)).data.course;
 export const updateCourse = async (id, details) => (await api.put(`/courses/${id}`, details)).data.course;

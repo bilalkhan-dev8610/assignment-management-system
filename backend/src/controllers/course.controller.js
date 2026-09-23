@@ -31,6 +31,11 @@ const listForStudent = asyncHandler(async (req, res) => {
   res.json({ success: true, data: { courses } });
 });
 
+const listAvailableForStudent = asyncHandler(async (req, res) => {
+  const courses = await courseService.listAvailableCoursesForStudent(req.user.id);
+  res.json({ success: true, data: { courses } });
+});
+
 const getOne = asyncHandler(async (req, res) => {
   const course = await courseService.getCourseForUser(courseIdFrom(req), req.user);
   res.json({ success: true, data: { course } });
@@ -56,4 +61,4 @@ const enroll = asyncHandler(async (req, res) => {
   res.status(201).json({ success: true, message: 'Enrolled in course', data });
 });
 
-module.exports = { create, listForProfessor, listForStudent, getOne, update, remove, enroll };
+module.exports = { create, listForProfessor, listForStudent, listAvailableForStudent, getOne, update, remove, enroll };
